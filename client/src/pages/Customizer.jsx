@@ -53,7 +53,6 @@ const Customizer = () => {
     if (!prompt) return alert("Please enter a prompt");
 
     try {
-      // call our backend to generate an ai image!
       setGeneratingImg(true);
 
       const response = await fetch("http://localhost:8080/api/v1/dalle", {
@@ -73,7 +72,7 @@ const Customizer = () => {
       alert(error);
     } finally {
       setGeneratingImg(false);
-      setActiveFilterTab("");
+      setActiveEditorTab("");
     }
   };
 
@@ -98,6 +97,7 @@ const Customizer = () => {
       default:
         state.isFullTexture = true;
         state.isLogoTexture = false;
+        break;
     }
     // after setting the state, activeFilterTab is updated
     setActiveFilterTab((prevState) => {
