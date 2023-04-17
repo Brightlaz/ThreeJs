@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSnapshot } from "valtio";
 import config from "../config/config";
@@ -55,15 +55,18 @@ const Customizer = () => {
     try {
       setGeneratingImg(true);
 
-      const response = await fetch("http://localhost:8080/api/v1/dalle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt,
-        }),
-      });
+      const response = await fetch(
+        "https://three-s9r3.onrender.com/api/v1/dalle",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -114,11 +117,30 @@ const Customizer = () => {
       setActiveEditorTab("");
     });
   };
+
+  const ref = useRef(null);
+
+  useEffect(() => {
+    // add event listener to document
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // remove event listener from document
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      // reset state
+      setActiveEditorTab("");
+    }
+  };
   return (
     <AnimatePresence>
       {!snap.intro && (
         <>
           <motion.div
+            ref={ref}
             key="custom"
             className="absolute top-0 left-0 z-10"
             {...slideAnimation("left")}

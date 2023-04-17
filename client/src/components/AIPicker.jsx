@@ -20,19 +20,21 @@ const AIPicker = ({ prompt, setPrompt, generatingImg, handleSubmit }) => {
           />
         ) : (
           <>
-            <CustomButton
-              type="outline"
-              title="AI logo"
-              handleClick={() => handleSubmit("logo")}
-              customStyles="text-xs"
-            />
+            <div className="flex flex-wrap gap-3 mt-4">
+              <CustomButton
+                type="outline"
+                title="AI logo"
+                handleClick={() => handleSubmit("logo")}
+                customStyles="text-xs"
+              />
 
-            <CustomButton
-              type="filled"
-              title="AI Full"
-              handleClick={() => handleSubmit("full")}
-              customStyles="text-xs"
-            />
+              <CustomButton
+                type="filled"
+                title="AI Full"
+                handleClick={() => handleSubmit("full")}
+                customStyles="text-xs"
+              />
+            </div>
           </>
         )}
       </div>
