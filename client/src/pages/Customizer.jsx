@@ -120,21 +120,21 @@ const Customizer = () => {
 
   const ref = useRef(null);
 
-  useEffect(() => {
-    // add event listener to document
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // remove event listener from document
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  // useEffect(() => {
+  //   // add event listener to document
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     // remove event listener from document
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      // reset state
-      setActiveEditorTab("");
-    }
-  };
+  // const handleClickOutside = (event) => {
+  //   if (ref.current && !ref.current.contains(event.target)) {
+  //     // reset state
+  //     setActiveEditorTab("");
+  //   }
+  // };
   return (
     <AnimatePresence>
       {!snap.intro && (

@@ -1,55 +1,50 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { SketchPicker } from "react-color";
 import { FaEyeDropper } from "react-icons/fa";
 import { useSnapshot } from "valtio";
+import { extractColorFromScreen } from "react-color-extractor";
 
 import state from "../store";
 
 const ColorPicker = () => {
   const snap = useSnapshot(state);
-  // const [color, setColor] = useState("#ffffff");
-  // const canvasRef = useRef(null);
-  // const [isEyedropperActive, setIsEyedropperActive] = useState(false);
+  const [isEyedropperActive, setIsEyedropperActive] = useState(false);
+  const [eyedropperColor, setEyedropperColor] = useState(snap.color);
 
-  // const handleEyedropperClick = () => {
-  //   setIsEyedropperActive(!isEyedropperActive);
-  // };
+  useEffect(() => {
+    if (isEyedropperActive) {
+      const handleMouseMove = (e) => {
+        extractColorFromScreen(e.clientX, e.clientY).then((color) => {
+          setEyedropperColor(color);
+          state.color = color;
+        });
+      };
 
-  // const handleCanvasClick = (event) => {
-  //   if (isEyedropperActive) {
-  //     const canvas = canvasRef.current;
-  //     const context = canvas.getContext("2d");
+      window.addEventListener("mousemove", handleMouseMove);
 
-  //     const x = event.clientX - canvas.offsetLeft;
-  //     const y = event.clientY - canvas.offsetTop;
-  //     const pixel = context.getImageData(x, y, 1, 1).data;
-  //     const newColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
-  //     setColor(newColor);
-  //     console.log(color);
-  //     setIsEyedropperActive(false);
-  //   }
-  // };
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    }
+  }, [isEyedropperActive]);
+
+  const handleEyedropperClick = () => {
+    setIsEyedropperActive(!isEyedropperActive);
+  };
 
   return (
     <div className="absolute ml-3 left-full">
-      {/* <canvas
-        ref={canvasRef}
-        style={{ display: "none" }}
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onClick={handleCanvasClick}
-      />
       <button onClick={handleEyedropperClick}>
         {isEyedropperActive ? (
           <FaEyeDropper style={{ color: "red" }} />
         ) : (
           <FaEyeDropper />
         )}
-      </button> */}
+      </button>
       <SketchPicker
-        color={snap.color}
+        color={eyedropperColor}
         disableAlpha
-        onChange={(color) => (state.color = color.hex)}
+        onChange={(color) => setEyedropperColor(color.hex)}
       />
     </div>
   );
