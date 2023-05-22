@@ -1,32 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { SketchPicker } from "react-color";
-import { FaEyeDropper } from "react-icons/fa";
 import { useSnapshot } from "valtio";
 
 import state from "../store";
 
 const ColorPicker = () => {
   const snap = useSnapshot(state);
-  const [isEyedropperActive, setIsEyedropperActive] = useState(false);
-  const [eyedropperColor, setEyedropperColor] = useState(snap.color);
-
-  const handleEyedropperClick = () => {
-    setIsEyedropperActive(!isEyedropperActive);
-  };
 
   return (
-    <div className="absolute ml-3 left-full">
-      <button onClick={handleEyedropperClick}>
-        {isEyedropperActive ? (
-          <FaEyeDropper style={{ color: "red" }} />
-        ) : (
-          <FaEyeDropper />
-        )}
-      </button>
+    <div className="absolute left-full ml-3">
       <SketchPicker
-        color={eyedropperColor}
+        color={snap.color}
         disableAlpha
-        onChange={(color) => setEyedropperColor(color.hex)}
+        onChange={(color) => (state.color = color.hex)}
       />
     </div>
   );
