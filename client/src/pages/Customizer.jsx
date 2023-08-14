@@ -171,6 +171,29 @@ const Customizer = () => {
               customStyles="w-fit px-4 py-2.5 font-bold text-sm"
             />
           </motion.div>
+          <motion.div
+            className="absolute z-50 bottom-5 right-5"
+            {...fadeAnimation}
+          >
+            <CustomButton
+              type="filled"
+              title="DOWNLOAD"
+              handleClick={() => {
+                console.log("click");
+                const link = document.createElement("a");
+                link.setAttribute("download", "canvas.png");
+                link.setAttribute(
+                  "href",
+                  document
+                    .querySelector("canvas")
+                    .toDataURL("image/png")
+                    .replace("image/png", "image/octet-stream")
+                );
+                link.click();
+              }}
+              customStyles="w-fit px-4 py-2.5 font-bold text-sm"
+            />
+          </motion.div>
 
           <motion.div
             className="filtertabs-container"
